@@ -1,9 +1,9 @@
 package board;
 
 public class Advertisement {
-    public final String title;
-    public final String text;
-    public final String user;
+    public String title;
+    public String text;
+    public String user;
 
     public Advertisement(String title, String text, String user) {
         this.title = title;
