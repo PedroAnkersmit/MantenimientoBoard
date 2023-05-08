@@ -64,7 +64,7 @@ public class Stepdefs2 {
     }
 
     @Then("el sistema avisa al usuario de que se ha borrado el anuncio")
-    public void aVoid() {
-
+    public void system_notifies_of_advertisement_removal(){
+        assertEquals("Se ha borrado el anuncio del tablón", outContent.toString());
     }
 }
