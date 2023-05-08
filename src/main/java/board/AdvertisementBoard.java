@@ -17,12 +17,18 @@ public class AdvertisementBoard {
      * Constructs a board containing an initial advertisement published by the {@code BOARD_OWNER}.
      */
     public AdvertisementBoard() {
+        /*if(!advertisementList.isEmpty()){
+            throw new AdvertisementBoardException("Ya hay un tablón creado");
+        }*/
         /*advertisementList = new ArrayList<>();
         Advertisement initialAdvertisement = new Advertisement(
                 "Welcome",
                 "This board is intended for your advertisements",
                 BOARD_OWNER);
-        advertisementList.add(initialAdvertisement);*/
+        advertisementList.add(initialAdvertisement);
+
+        */
+        //System.out.println("Se ha creado un tablón de anuncios");
     }
 
     /**
