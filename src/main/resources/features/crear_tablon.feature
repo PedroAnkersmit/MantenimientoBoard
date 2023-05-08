@@ -4,7 +4,7 @@ Feature: Crear tablón
   Scenario: Crear tablón success
     Given no hay ningún tablón creado
     And el usuario es THE Company
-    When el usuario crea un nuevo anuncio
+    When el usuario crea un anuncio
     Then se crea un tablón
     And se publica el anuncio en el tablón.
     And el numero de anuncios publicados es 1

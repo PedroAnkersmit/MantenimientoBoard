@@ -27,3 +27,10 @@ Feature: Publicar anuncio
     Then su anuncio es rechazado
     And el numero de anuncios publicados no cambia
     And el sistema avisa al usuario de que no se ha publicado el anuncio
+
+  Scenario: Publicar anuncio fail (El tablón está lleno)
+    Given hay un tablón de anuncios creado
+    And el numero de anuncios publicados es igual al numero máximo de anuncios permitidos en el tablón
+    When el usuario crea un anuncio
+    Then el sistema avisa el usuario de que no se ha podido agregar el anuncio
+    And el numero de anuncios publicados no cambia
