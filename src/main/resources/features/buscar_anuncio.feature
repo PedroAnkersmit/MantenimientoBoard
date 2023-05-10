@@ -3,10 +3,10 @@ Feature: Buscar anuncio
 
   Scenario: Buscar anuncio success
     Given hay un tablón de anuncios creado
-    Given el tablón tiene al menos un anuncio del usuario
+    And el tablón tiene al menos un anuncio del usuario
     When el usuario busca un anuncio suyo que está en el tablón
     Then el tablón encuentra el anuncio pedido
-    And el sistema avisa al usuario de que se ha publicado el anuncio
+    And el sistema avisa al usuario de que se ha encontrado el anuncio
 
   Scenario: Buscar anuncio fail
     Given hay un tablón de anuncios creado

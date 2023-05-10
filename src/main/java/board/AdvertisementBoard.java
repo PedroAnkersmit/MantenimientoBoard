@@ -39,6 +39,7 @@ public class AdvertisementBoard {
      * @return the number of advertisements published in this board
      */
     public int numberOfPublishedAdvertisements() {
+        /*System.out.println("Hay " + advertisementList.size() + " anuncios publicados en el tablón" );*/
         return 1;//advertisementList.size();
     }
 
@@ -70,6 +71,17 @@ public class AdvertisementBoard {
      * @return an {@code Optional} with the appropriate advertisement, or and empty {@code Optional}
      */
     public Optional<Advertisement> findByTitle(String title) {
+
+
+        /*if(this != null){if(advertisementList.stream().filter(ad -> ad.title.equals(title)).findFirst().isPresent()){
+            System.out.println("Se ha encontrado su anuncio");
+        }else{
+            System.out.println("No se ha encontrado su anuncio");
+        }
+        }else {
+            throw new AdvertisementBoardException("No hay ningún tablón creado");
+        }
+        */
         //return advertisementList.stream().filter(ad -> ad.title.equals(title)).findFirst();
         return null;
     }
