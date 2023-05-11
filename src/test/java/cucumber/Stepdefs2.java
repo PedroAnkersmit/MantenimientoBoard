@@ -32,6 +32,7 @@ public class Stepdefs2 {
     }
 
 
+    // Borrar anuncio success
     @Given("hay un tablón de anuncios creado")
     public void adb_created() {
         advertisementBoard = new AdvertisementBoard();
@@ -60,11 +61,24 @@ public class Stepdefs2 {
         int actualValue = advertisementBoard.numberOfPublishedAdvertisements();
 
         assertEquals(expectedValue, actualValue);
-
     }
 
     @Then("el sistema avisa al usuario de que se ha borrado el anuncio")
     public void system_notifies_of_advertisement_removal(){
         assertEquals("Se ha borrado el anuncio del tablón", outContent.toString());
     }
+
+    // Borrar de anuncio de THE COMPANY
+    // Given hay un tablón de anuncios creado -> ya hecho
+    // And hay al menos un anuncio en el tablón -> hecho en el de Pedro
+    @And("el usuario es THE Company")
+    public void user_is_THE_Company(){
+        advertisement = new Advertisement("title", "text", "THE Company");
+    }
+
+    @And("el usuario borra un anuncio cualquiera")
+    public void THE_Company_deletes_an_advertisement() {
+
+    }
+
 }
