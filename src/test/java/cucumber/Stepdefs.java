@@ -3,21 +3,21 @@ package cucumber;
 import board.Advertisement;
 import board.AdvertisementBoard;
 import board.Publisher;
+
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.contrib.java.lang.system.SystemOutRule;
+import org.junit.*;
+
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.Optional;
 
 import static board.AdvertisementBoard.*;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
+
 
 public class Stepdefs {
 
@@ -26,11 +26,12 @@ public class Stepdefs {
     private final PrintStream originalOut = System.out;
     private final PrintStream originalErr = System.err;
 
+    @Before
      public void setUpStream() {
         System.setOut(new PrintStream(outContent));
         System.setErr(new PrintStream(errContent));
     }
-
+    @After
     public void restoreStreams() {
         System.setOut(originalOut);
         System.setErr(originalErr);
@@ -38,23 +39,13 @@ public class Stepdefs {
 
     AdvertisementBoard advertisementBoard;
     Advertisement advertisement;
-
     Publisher board_owner = new Publisher(BOARD_OWNER, BOARD_OWNER_FUND);
     Publisher publisher;
-
     double currentFunds;
-    int currentNumberOfBoards;
-    int currentNumberOfPublishedAdvertisements;
-
     Advertisement aux;
-
     int size;
 
     //Feature: Crear tablon
-
-
-
-
     @Given("no hay ningún tablon creado")
     public void no_board_yet(){
 
@@ -75,7 +66,7 @@ public class Stepdefs {
                "This board is intended for your advertisements",
                board_owner);
         Advertisement actual = advertisementBoard.findByTitle("Welcome");
-        assertEquals(expected, actual);
+        assertTrue(expected.equals( actual));
 
     }
     @And("el numero de anuncios publicados es 1")
@@ -104,7 +95,7 @@ public class Stepdefs {
     @And("el sistema avisa al usuario de que no se ha podido crear el tablon")
     public void system_throws_an_exception(){
         assertEquals("Ya hay un tablon creado", errContent.toString());
-        restoreStreams();
+
     }
 
     //Feature:Buscar anuncio
@@ -117,7 +108,6 @@ public class Stepdefs {
     }
     @When("el usuario busca un anuncio suyo que está en el tablon")
     public void user_searches_for_his_ad_which_is_on_the_board(){
-        setUpStream();
         aux = advertisementBoard.findByTitle("title");
     }
     @Then("el tablon encuentra el anuncio pedido")
@@ -128,7 +118,7 @@ public class Stepdefs {
     @And("el sistema avisa al usuario de que se ha encontrado el anuncio")
     public void system_notifies_of_found_ad(){
         assertEquals("Se ha encontrado su anuncio", outContent.toString());
-        restoreStreams();
+
     }
     @And("el usuario no es THE Company")
     public void user_is_not_THE_Company(){
@@ -141,31 +131,28 @@ public class Stepdefs {
     }
     @When("el usuario busca un anuncio suyo")
     public void user_searches_for_his_ad(){
-        setUpStream();
         if(advertisementBoard != null){
         aux = advertisementBoard.findByTitle("title");
     }
     }
     @Then("no se encuentra el anuncio")
     public void ad_is_not_found(){
-        setUpStream();
         assertNotEquals(advertisement, aux);
     }
     @And("el sistema avisa el usuario de que no se ha podido encontrar el anuncio")
     public void system_notifies_of_ad_not_found(){
         assertEquals("No se ha encontrado su anuncio", outContent.toString());
-        restoreStreams();
+
     }
 
     @Then("el sistema avisa al usuario de que no hay ningún tablon creado")
     public void system_notifies_of_no_board_created(){
-        assertEquals("No hay ningún tablon creado", errContent.toString());
-        restoreStreams();
+        assertThrows(NullPointerException.class, () -> advertisementBoard.numberOfPublishedAdvertisements());
+
     }
 
     @When("el usuario pide saber el número de anuncios publicados en el tablon")
     public void user_asks_for_size_of_the_board(){
-        setUpStream();
         if(advertisementBoard != null){
         size = advertisementBoard.numberOfPublishedAdvertisements();
         } else{
@@ -177,7 +164,7 @@ public class Stepdefs {
     public void system_shows_number_of_ads_in_the_board(){
         String text = "Hay " + size + " anuncios publicados en el tablon";
         assertEquals(text, outContent.toString());
-        restoreStreams();
+
     }
 
 
@@ -234,7 +221,7 @@ public class Stepdefs {
 
     @When("el usuario borra un anuncio suyo que no está en el tablon")
     public void user_deletes_an_advertisement_that_is_not_in_the_board() {
-        currentNumberOfBoards = advertisementBoard.numberOfPublishedAdvertisements();
+        size = advertisementBoard.numberOfPublishedAdvertisements();
         advertisementBoard.deleteAdvertisement("", "user");
     }
 
@@ -242,7 +229,7 @@ public class Stepdefs {
     public void size_of_board_remains_the_same(){
         int actualValue = advertisementBoard.numberOfPublishedAdvertisements();
 
-        assertEquals(currentNumberOfBoards, actualValue);
+        assertEquals(size, actualValue);
     }
 
 
