@@ -8,4 +8,12 @@ public class Publisher {
         this.name = name;
         this.funds = funds;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public float getFunds() {
+        return funds;
+    }
 }
