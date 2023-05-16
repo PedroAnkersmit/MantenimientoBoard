@@ -12,6 +12,7 @@ public class AdvertisementBoard {
     public static final String BOARD_OWNER = "THE Company";
     public static final int MAX_BOARD_SIZE = 20;
     private final List<Advertisement> advertisementList = new ArrayList<>();//quitar el new
+    private final List<Publisher> publisherList = new ArrayList<>();
 
     /**
      * Constructs a board containing an initial advertisement published by the {@code BOARD_OWNER}.
