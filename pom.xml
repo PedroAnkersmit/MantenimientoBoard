@@ -32,6 +32,13 @@
             <artifactId>jacoco-maven-plugin</artifactId>
             <version>0.8.10</version>
         </dependency>
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-expressions</artifactId>
+            <version>6.2.0</version>
+            <scope>test</scope>
+        </dependency>
+
 
     </dependencies>
     <properties>

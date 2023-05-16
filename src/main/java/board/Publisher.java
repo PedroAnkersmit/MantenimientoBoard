@@ -2,9 +2,9 @@ package board;
 
 public class Publisher {
     public String name;
-    public float funds;
+    public double funds;
 
-    public Publisher(String name, float funds) {
+    public Publisher(String name, double funds) {
         this.name = name;
         this.funds = funds;
     }
@@ -13,7 +13,11 @@ public class Publisher {
         return name;
     }
 
-    public float getFunds() {
+    public double getFunds() {
         return funds;
+    }
+
+    public void setFunds(double funds) {
+        this.funds = funds;
     }
 }

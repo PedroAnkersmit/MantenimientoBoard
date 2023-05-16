@@ -10,26 +10,26 @@ import java.util.Optional;
 public class AdvertisementBoard {
 
     public static final String BOARD_OWNER = "THE Company";
+    public static final Double BOARD_OWNER_FUND = 0.0;
     public static final int MAX_BOARD_SIZE = 20;
-    private final List<Advertisement> advertisementList = new ArrayList<>();//quitar el new
-    private final List<Publisher> publisherList = new ArrayList<>();
+    public static final double PRIZE = 110.00;
+    private List<Advertisement> advertisementList = new ArrayList<>();
 
     /**
      * Constructs a board containing an initial advertisement published by the {@code BOARD_OWNER}.
      */
     public AdvertisementBoard() {
-        /*if(!advertisementList.isEmpty()){
-            throw new AdvertisementBoardException("Ya hay un tablón creado");
-        }*/
-        /*advertisementList = new ArrayList<>();
+        if(!advertisementList.isEmpty()){
+            throw new AdvertisementBoardException("Ya hay un tablon creado");
+        }
+        advertisementList = new ArrayList<>();
         Advertisement initialAdvertisement = new Advertisement(
                 "Welcome",
-                "This board is intended for your advertisements",
-                BOARD_OWNER);
+                "This board is intended for your advertisements", new Publisher(BOARD_OWNER, BOARD_OWNER_FUND));
         advertisementList.add(initialAdvertisement);
 
-        */
-        //System.out.println("Se ha creado un tablón de anuncios");
+
+        System.out.println("Se ha creado un tablon de anuncios");
     }
 
     /**
@@ -40,8 +40,8 @@ public class AdvertisementBoard {
      * @return the number of advertisements published in this board
      */
     public int numberOfPublishedAdvertisements() {
-        /*System.out.println("Hay " + advertisementList.size() + " anuncios publicados en el tablón" );*/
-        return 1;//advertisementList.size();
+        System.out.println("Hay " + advertisementList.size() + " anuncios publicados en el tablon" );
+        return advertisementList.size();
     }
 
     /**
@@ -51,18 +51,20 @@ public class AdvertisementBoard {
      * and must have sufficient funds in the payment gateway. The advertiser called <tt>"THE Company"</tt>
      * is the owner of the advertisement board, so it can publish freely, with no constraints.
      */
-    public void publish(Advertisement advertisement /*AdvertiserDatabase advertiserDatabase,
-                        PaymentGateway paymentGateway*/                        ) {
-        /*if (advertisement.advertiser.equals(BOARD_OWNER))
+    public void publish(Advertisement advertisement ) {
+        if (advertisement.user.equals(BOARD_OWNER))
             advertisementList.add(advertisement);
         else {
-            if (advertiserDatabase.advertiserIsRegistered(advertisement.advertiser) &&
-                    paymentGateway.advertiserHasFunds(advertisement.advertiser)) {
-                advertisementList.add(advertisement);
-                paymentGateway.chargeAdvertiser(advertisement.advertiser);
+            double funds = advertisement.user.getFunds();
+            if (funds >= PRIZE ){
+                    funds -= PRIZE;
+                    advertisement.user.setFunds(funds);
+                    advertisementList.add(advertisement);
+                }
             }
-        }*/
+
     }
+
 
     /**
      * Returns an {@code Optional} with an advertisement with the given title in this board,
@@ -71,20 +73,29 @@ public class AdvertisementBoard {
      * @param title the title to search for
      * @return an {@code Optional} with the appropriate advertisement, or and empty {@code Optional}
      */
-    public Optional<Advertisement> findByTitle(String title) {
+    public Advertisement findByTitle(String title) {
 
-
-        /*if(this != null){if(advertisementList.stream().filter(ad -> ad.title.equals(title)).findFirst().isPresent()){
+        if(this != null){
+            if(advertisementList.stream().filter(ad -> ad.title.equals(title)).findFirst().isPresent()){
             System.out.println("Se ha encontrado su anuncio");
+            Advertisement aux = null;
+            while (aux == null){
+            for(Advertisement a : advertisementList){
+                if(a.title == title){
+                aux = a;
+                }
+            }
+            }
+            return aux;
         }else{
             System.out.println("No se ha encontrado su anuncio");
+                return null;
         }
         }else {
-            throw new AdvertisementBoardException("No hay ningún tablón creado");
+            throw new AdvertisementBoardException("No hay ningún tablon creado");
         }
-        */
-        //return advertisementList.stream().filter(ad -> ad.title.equals(title)).findFirst();
-        return null;
+
+
     }
 
     /**
@@ -94,6 +105,7 @@ public class AdvertisementBoard {
      * @param advertiserName the name of the advertiser of the advertisements to be deleted from this board
      */
     public void deleteAdvertisement(String title, String advertiserName) {
-       //advertisementList.removeIf(ad -> ad.title.equals(title) && ad.advertiser.equals(advertiserName));
+        System.out.println("Se ha borrado el anuncio del tablon");
+        advertisementList.removeIf(ad -> ad.title.equals(title) && ad.user.getName().equals(advertiserName));
     }
 }
