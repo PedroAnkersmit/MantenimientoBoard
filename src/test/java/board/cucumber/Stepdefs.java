@@ -181,8 +181,10 @@ public class Stepdefs {
 
     @When("el usuario borra un anuncio suyo que no está en el tablon")
     public void user_deletes_an_advertisement_that_is_not_in_the_board() {
+        if(advertisementBoard != null){
         size = advertisementBoard.numberOfPublishedAdvertisements();
         advertisementBoard.deleteAdvertisement("", "user");
+    }
     }
 
     @And("el numero de anuncios publicados no cambia")
@@ -194,12 +196,6 @@ public class Stepdefs {
 
 
     // Borrar anuncio fail (No hay tablon creado)
-    @When("el usuario borra un anuncio suyo")
-    public void user_deletes_one_of_his_advertisements() {
-        if(advertisementBoard != null){
-        advertisementBoard.deleteAdvertisement("title", "user");
-    }
-    }
 
 
     // Borrar anuncio fail (intenta borrar un anuncio que no es suyo)
