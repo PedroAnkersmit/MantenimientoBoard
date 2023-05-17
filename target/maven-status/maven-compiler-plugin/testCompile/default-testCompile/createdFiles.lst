@@ -1,2 +1,2 @@
-RunCucumberTest.class
-cucumber\Stepdefs.class
+board\RunCucumberTest.class
+board\cucumber\Stepdefs.class

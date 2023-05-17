@@ -1,4 +1,4 @@
-package cucumber;
+package board.cucumber;
 
 import board.Advertisement;
 import board.AdvertisementBoard;

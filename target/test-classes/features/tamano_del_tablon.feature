@@ -4,7 +4,7 @@ Feature: Tamaño del Tablon
   Scenario: GetSize success
     Given hay un tablon de anuncios creado
     When el usuario pide saber el número de anuncios publicados en el tablon
-    Then el sistema le dice cuantos anuncios hay publicados en ese tablon
+    Then el sistema devuelve el número de anuncios correcto
 
   Scenario: GetSize fail
     Given no hay ningún tablon creado

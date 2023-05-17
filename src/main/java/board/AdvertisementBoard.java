@@ -2,7 +2,6 @@ package board;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Board to publish advertisements.
@@ -13,15 +12,13 @@ public class AdvertisementBoard {
     public static final Double BOARD_OWNER_FUND = 0.0;
     public static final int MAX_BOARD_SIZE = 20;
     public static final double PRIZE = 110.00;
-    private List<Advertisement> advertisementList = new ArrayList<>();
+    private List<Advertisement> advertisementList;
 
     /**
      * Constructs a board containing an initial advertisement published by the {@code BOARD_OWNER}.
      */
     public AdvertisementBoard() {
-        if(!advertisementList.isEmpty()){
-            throw new AdvertisementBoardException("Ya hay un tablon creado");
-        }
+
         advertisementList = new ArrayList<>();
         Advertisement initialAdvertisement = new Advertisement(
                 "Welcome",
@@ -52,7 +49,8 @@ public class AdvertisementBoard {
      * is the owner of the advertisement board, so it can publish freely, with no constraints.
      */
     public void publish(Advertisement advertisement ) {
-        if (advertisement.user.equals(BOARD_OWNER))
+        if(this.numberOfPublishedAdvertisements() < MAX_BOARD_SIZE){
+        if (advertisement.user.name.equals(BOARD_OWNER))
             advertisementList.add(advertisement);
         else {
             double funds = advertisement.user.getFunds();
@@ -60,8 +58,13 @@ public class AdvertisementBoard {
                     funds -= PRIZE;
                     advertisement.user.setFunds(funds);
                     advertisementList.add(advertisement);
-                }
+                } else {
+                throw new AdvertisementBoardException("Su anuncio ha sido rechazado");
             }
+            }
+        } else {
+            throw new AdvertisementBoardException("El tablon esta lleno");
+        }
 
     }
 
@@ -76,9 +79,10 @@ public class AdvertisementBoard {
     public Advertisement findByTitle(String title) {
 
         if(this != null){
+            Advertisement aux = null;
             if(advertisementList.stream().filter(ad -> ad.title.equals(title)).findFirst().isPresent()){
             System.out.println("Se ha encontrado su anuncio");
-            Advertisement aux = null;
+
             while (aux == null){
             for(Advertisement a : advertisementList){
                 if(a.title == title){
@@ -89,7 +93,7 @@ public class AdvertisementBoard {
             return aux;
         }else{
             System.out.println("No se ha encontrado su anuncio");
-                return null;
+                return aux;
         }
         }else {
             throw new AdvertisementBoardException("No hay ningún tablon creado");
@@ -106,6 +110,9 @@ public class AdvertisementBoard {
      */
     public void deleteAdvertisement(String title, String advertiserName) {
         System.out.println("Se ha borrado el anuncio del tablon");
-        advertisementList.removeIf(ad -> ad.title.equals(title) && ad.user.getName().equals(advertiserName));
+        Advertisement aux = findByTitle(title);
+        if(advertisementList.contains(aux) && aux.getUser().getName() == advertiserName){
+            advertisementList.remove(aux);
+        }
     }
 }
