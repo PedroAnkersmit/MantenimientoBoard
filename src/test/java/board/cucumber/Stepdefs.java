@@ -29,7 +29,6 @@ public class Stepdefs {
     //Feature: Crear tablon
     @Given("no hay ningún tablon creado")
     public void no_board_yet(){
-
         advertisementBoard = null;
     }
     @When("el usuario crea un tablon")
@@ -109,13 +108,19 @@ public class Stepdefs {
         assertNotEquals(advertisement, aux);
     }
 
-
-    @Then("el sistema avisa al usuario de que no hay ningún tablon creado")
-    public void system_notifies_of_no_board_created(){
-        assertThrows(NullPointerException.class, () -> advertisementBoard.numberOfPublishedAdvertisements());
-
+    @Then("el sistema avisa al usuario de que no hay ningún tablon creado y no se puede borrar su anuncio")
+    public void delete_system_notifies_of_no_board_created() {
+        assertThrows(NullPointerException.class, () -> advertisementBoard.deleteAdvertisement(advertisement.getTitle(), advertisement.getUser().getName()));
     }
 
+    @Then("el sistema avisa al usuario de que no hay ningún tablon creado y no se puede saber su tamaño")
+    public void size_system_notifies_of_no_board_created(){
+        assertThrows(NullPointerException.class, () -> advertisementBoard.numberOfPublishedAdvertisements());
+    }
+    @Then("el sistema avisa al usuario de que no hay ningún tablon creado y no se puede buscar su anuncio")
+    public void find_system_notifies_of_no_board_created(){
+        assertThrows(NullPointerException.class, () -> advertisementBoard.findByTitle(advertisement.getTitle()));
+    }
     @When("el usuario pide saber el número de anuncios publicados en el tablon")
     public void user_asks_for_size_of_the_board(){
         if(advertisementBoard != null){
@@ -253,24 +258,30 @@ public class Stepdefs {
         publisher = new Publisher("user", 20.0);
         assertTrue(publisher.getFunds() < PRIZE);
     }
-
-    @Then("su anuncio es rechazado")
-    public void advertisement_gets_declined() {
-        advertisement = new Advertisement("title", "text", publisher);
-        size = advertisementBoard.numberOfPublishedAdvertisements();
-        assertThrows(AdvertisementBoardException.class, () -> advertisementBoard.publish(advertisement));
-    }
-
     // Publicar anuncio fail
     @And("el numero de anuncios publicados es igual al numero máximo de anuncios permitidos en el tablon")
     public void number_of_published_advertisements_is_equal_to_the_max_board_size() {
         int i = 0;
-        while(advertisementBoard.numberOfPublishedAdvertisements() <20){
+        advertisementBoard = new AdvertisementBoard();
+        while(advertisementBoard.numberOfPublishedAdvertisements() <MAX_BOARD_SIZE){
             advertisement = new Advertisement("title" + i + " ", "text", board_owner);
             advertisementBoard.publish(advertisement);
             i++;
         }
     }
+
+    @Then("su anuncio es rechazado por falta de fondos")
+    public void advertisement_gets_declined_not_enough_funds() {
+        advertisement = new Advertisement("title", "text", publisher);
+        size = advertisementBoard.numberOfPublishedAdvertisements();
+        assertThrows(AdvertisementBoardException.class, () -> advertisementBoard.publish(advertisement));
+    }
+
+    @Then("su anuncio es rechazado porque el tablon esta lleno")
+    public void advertisement_gets_declined_board_full(){
+        assertThrows(AdvertisementBoardException.class, () -> advertisementBoard.publish(advertisement));
+    }
+
 
 
 }

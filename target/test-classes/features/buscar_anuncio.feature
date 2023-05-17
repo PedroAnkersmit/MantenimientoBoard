@@ -17,4 +17,4 @@ Feature: Buscar anuncio
   Scenario: Buscar anuncio fail (No hay tablon)
     Given no hay ningún tablon creado
     When el usuario busca un anuncio suyo
-    Then el sistema avisa al usuario de que no hay ningún tablon creado
+    Then el sistema avisa al usuario de que no hay ningún tablon creado y no se puede buscar su anuncio

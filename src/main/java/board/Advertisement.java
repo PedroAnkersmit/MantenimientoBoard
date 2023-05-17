@@ -17,9 +17,6 @@ public class Advertisement {
         return title;
     }
 
-    public String getText() {
-        return text;
-    }
 
     public Publisher getUser() {
         return user;
@@ -28,13 +25,9 @@ public class Advertisement {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Advertisement)) return false;
-        Advertisement that = (Advertisement) o;
+        if (!(o instanceof Advertisement that)) return false;
         return Objects.equals(title, that.title) && Objects.equals(text, that.text) && Objects.equals(user, that.user);
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(title, text, user);
-    }
+
 }

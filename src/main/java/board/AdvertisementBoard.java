@@ -78,14 +78,13 @@ public class AdvertisementBoard {
      */
     public Advertisement findByTitle(String title) {
 
-        if(this != null){
             Advertisement aux = null;
             if(advertisementList.stream().filter(ad -> ad.title.equals(title)).findFirst().isPresent()){
             System.out.println("Se ha encontrado su anuncio");
 
             while (aux == null){
             for(Advertisement a : advertisementList){
-                if(a.title == title){
+                if(a.getTitle().equals(title)){
                 aux = a;
                 }
             }
@@ -95,11 +94,6 @@ public class AdvertisementBoard {
             System.out.println("No se ha encontrado su anuncio");
                 return aux;
         }
-        }else {
-            throw new AdvertisementBoardException("No hay ningún tablon creado");
-        }
-
-
     }
 
     /**

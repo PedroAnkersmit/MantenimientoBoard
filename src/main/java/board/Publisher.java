@@ -26,13 +26,9 @@ public class Publisher {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Publisher)) return false;
-        Publisher publisher = (Publisher) o;
+        if (!(o instanceof Publisher publisher)) return false;
         return Double.compare(publisher.getFunds(), getFunds()) == 0 && Objects.equals(getName(), publisher.getName());
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(getName(), getFunds());
-    }
+
 }

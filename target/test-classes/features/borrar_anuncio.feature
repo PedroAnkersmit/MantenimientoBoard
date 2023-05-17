@@ -25,7 +25,7 @@ Feature: Borrar anuncio
   Scenario: Borrar anuncio fail (No hay tablon creado)
     Given no hay ningún tablon creado
     When el usuario borra un anuncio suyo
-    Then el sistema avisa al usuario de que no hay ningún tablon creado
+    Then el sistema avisa al usuario de que no hay ningún tablon creado y no se puede borrar su anuncio
 
   Scenario: Borrar anuncio fail (Intenta borrar un anuncio que no es suyo)
     Given hay un tablon de anuncios creado

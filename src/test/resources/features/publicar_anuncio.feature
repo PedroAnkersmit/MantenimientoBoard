@@ -23,7 +23,7 @@ Feature: Publicar anuncio
     And el usuario no es THE Company
     And el usuario no tiene sufiente saldo
     When el usuario crea un anuncio
-    Then su anuncio es rechazado
+    Then su anuncio es rechazado por falta de fondos
     And el numero de anuncios publicados no cambia
 
 
@@ -31,4 +31,5 @@ Feature: Publicar anuncio
     Given hay un tablon de anuncios creado
     And el numero de anuncios publicados es igual al numero máximo de anuncios permitidos en el tablon
     When el usuario crea un anuncio
+    Then su anuncio es rechazado porque el tablon esta lleno
     And el numero de anuncios publicados no cambia
