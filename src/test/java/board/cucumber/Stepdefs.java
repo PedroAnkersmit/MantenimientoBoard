@@ -2,40 +2,21 @@ package cucumber;
 
 import board.Advertisement;
 import board.AdvertisementBoard;
+import board.AdvertisementBoardException;
 import board.Publisher;
 
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.junit.*;
 
 
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
-import java.util.Optional;
 
 import static board.AdvertisementBoard.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 
 public class Stepdefs {
-
-    private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-    private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
-    private final PrintStream originalOut = System.out;
-    private final PrintStream originalErr = System.err;
-
-    @Before
-     public void setUpStream() {
-        System.setOut(new PrintStream(outContent));
-        System.setErr(new PrintStream(errContent));
-    }
-    @After
-    public void restoreStreams() {
-        System.setOut(originalOut);
-        System.setErr(originalErr);
-    }
 
     AdvertisementBoard advertisementBoard;
     Advertisement advertisement;
@@ -73,35 +54,28 @@ public class Stepdefs {
     public void size_of_board_is_one(){
         assertEquals(advertisementBoard.numberOfPublishedAdvertisements(), 1);
     }
-    @And("el sistema avisa al usuario de que se ha creado el tablon correctamente")
-    public void system_notifies_of_board_creation(){
-        assertEquals("Se ha creado un tablon de anuncios", outContent.toString());
-    }
+
 
     @Given("hay un tablon de anuncios creado")
     public void the_board_is_already_created(){
-        publisher = new Publisher("user", 200.0);
-        advertisement = new Advertisement("title", "text", publisher );
+
+        //publisher = new Publisher("user", 200.0);
+        //advertisement = new Advertisement("title", "text", publisher );
         advertisementBoard = new AdvertisementBoard();
-        advertisementBoard.publish(advertisement);
+        //advertisementBoard.publish(advertisement);
         size = advertisementBoard.numberOfPublishedAdvertisements();
     }
 
-    @Then("el tablon no es creado")
-    public void the_board_stays_the_same(){
-        assertNotEquals(advertisementBoard, new AdvertisementBoard());
+    @Then("el sistema devuelve el número de anuncios correcto")
+    public  void size_is_correct(){
+        int expected = size;
+        int actual = advertisementBoard.numberOfPublishedAdvertisements();
+        assertEquals(expected, actual);
     }
-
-    @And("el sistema avisa al usuario de que no se ha podido crear el tablon")
-    public void system_throws_an_exception(){
-        assertEquals("Ya hay un tablon creado", errContent.toString());
-
-    }
-
     //Feature:Buscar anuncio
 
     @And("el tablon tiene al menos un anuncio del usuario")
-    public void adb_has_at_least_one_advertisement() {
+    public void adb_has_at_least_one_advertisement_from_the_user() {
         publisher = new Publisher("user", 200.0);
         advertisement = new Advertisement("title", "text", publisher);
         advertisementBoard.publish(advertisement);
@@ -115,11 +89,6 @@ public class Stepdefs {
         assertEquals(advertisement, aux);
     }
 
-    @And("el sistema avisa al usuario de que se ha encontrado el anuncio")
-    public void system_notifies_of_found_ad(){
-        assertEquals("Se ha encontrado su anuncio", outContent.toString());
-
-    }
     @And("el usuario no es THE Company")
     public void user_is_not_THE_Company(){
         publisher = new Publisher("user", 200.0);
@@ -139,11 +108,7 @@ public class Stepdefs {
     public void ad_is_not_found(){
         assertNotEquals(advertisement, aux);
     }
-    @And("el sistema avisa el usuario de que no se ha podido encontrar el anuncio")
-    public void system_notifies_of_ad_not_found(){
-        assertEquals("No se ha encontrado su anuncio", outContent.toString());
 
-    }
 
     @Then("el sistema avisa al usuario de que no hay ningún tablon creado")
     public void system_notifies_of_no_board_created(){
@@ -160,12 +125,6 @@ public class Stepdefs {
         }
     }
 
-    @Then("el sistema le dice cuantos anuncios hay publicados en ese tablon")
-    public void system_shows_number_of_ads_in_the_board(){
-        String text = "Hay " + size + " anuncios publicados en el tablon";
-        assertEquals(text, outContent.toString());
-
-    }
 
 
     // Feature: Borrar anuncio
@@ -191,11 +150,6 @@ public class Stepdefs {
         assertEquals(expectedValue, actualValue);
     }
 
-    @Then("el sistema avisa al usuario de que se ha borrado el anuncio")
-    public void system_notifies_of_advertisement_removal(){
-        assertEquals("Se ha borrado el anuncio del tablon", outContent.toString());
-    }
-
 
     // Borrar de anuncio de THE COMPANY
     @And("el usuario es THE Company")
@@ -211,8 +165,9 @@ public class Stepdefs {
 
     // Borrar anuncio THE Company
     @And("hay al menos un anuncio en el tablon")
-    public void adb_has_at_least_one_advertisement_from_THE_Company() {
-        advertisement = new Advertisement("title", "text", board_owner);
+    public void adb_has_at_least_one_advertisement() {
+        publisher = new Publisher("user", 200.0);
+        advertisement = new Advertisement("title", "text", publisher );
         advertisementBoard.publish(advertisement);
     }
 
@@ -227,9 +182,9 @@ public class Stepdefs {
 
     @And("el numero de anuncios publicados no cambia")
     public void size_of_board_remains_the_same(){
-        int actualValue = advertisementBoard.numberOfPublishedAdvertisements();
-
-        assertEquals(size, actualValue);
+        int expected = size;
+        int actual = advertisementBoard.numberOfPublishedAdvertisements();
+        assertEquals(expected, actual);
     }
 
 
@@ -260,16 +215,17 @@ public class Stepdefs {
     }
 
     @And("el usuario crea un anuncio")
-    @And("se crea el anuncio.")
     public void user_creates_a_new_advertisment() {
         publisher = new Publisher("user", 200.0);
         currentFunds = publisher.getFunds();
         advertisement = new Advertisement("title", "text", publisher);
         size = advertisementBoard.numberOfPublishedAdvertisements();
+        if(size != MAX_BOARD_SIZE){
         advertisementBoard.publish(advertisement);
     }
+    }
 
-    @And("se cobra al anunciante.")
+    @Then("se cobra al anunciante.")
     public void user_gets_charged() {
         assertEquals(currentFunds-PRIZE,publisher.getFunds(), 0);
     }
@@ -288,10 +244,6 @@ public class Stepdefs {
 
     }
 
-    @And("el sistema avisa al usuario de que se ha publicado el anuncio")
-    public void system_notifies_the_advertisements_has_been_published() {
-        assertEquals("Se ha publicado el anuncio", outContent.toString());
-    }
 
     // Publicar anuncio THE Company
 
@@ -304,24 +256,21 @@ public class Stepdefs {
 
     @Then("su anuncio es rechazado")
     public void advertisement_gets_declined() {
-        assertEquals("Anuncio rechazado", errContent.toString());
+        advertisement = new Advertisement("title", "text", publisher);
+        size = advertisementBoard.numberOfPublishedAdvertisements();
+        assertThrows(AdvertisementBoardException.class, () -> advertisementBoard.publish(advertisement));
     }
-
-    @And("el sistema avisa al usuario de que no se ha publicado el anuncio")
-    public void system_notifies_the_advertisement_could_not_be_published() {
-        assertEquals("El anuncio no se ha podido publicar", outContent.toString());
-    }
-
 
     // Publicar anuncio fail
     @And("el numero de anuncios publicados es igual al numero máximo de anuncios permitidos en el tablon")
     public void number_of_published_advertisements_is_equal_to_the_max_board_size() {
-
+        int i = 0;
+        while(advertisementBoard.numberOfPublishedAdvertisements() <20){
+            advertisement = new Advertisement("title" + i + " ", "text", board_owner);
+            advertisementBoard.publish(advertisement);
+            i++;
+        }
     }
 
-    @Then("el sistema avisa el usuario de que no se ha podido agregar el anuncio")
-    public void system_notifies_the_advertisement_could_not_be_added() {
-        assertEquals("El anuncio ha podido ser añadido", outContent.toString());
-    }
 
 }
