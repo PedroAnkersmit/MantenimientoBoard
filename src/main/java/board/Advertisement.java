@@ -17,7 +17,6 @@ public class Advertisement {
         return title;
     }
 
-
     public Publisher getUser() {
         return user;
     }
@@ -28,6 +27,4 @@ public class Advertisement {
         if (!(o instanceof Advertisement that)) return false;
         return Objects.equals(title, that.title) && Objects.equals(text, that.text) && Objects.equals(user, that.user);
     }
-
-
 }

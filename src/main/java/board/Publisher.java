@@ -29,6 +29,4 @@ public class Publisher {
         if (!(o instanceof Publisher publisher)) return false;
         return Double.compare(publisher.getFunds(), getFunds()) == 0 && Objects.equals(getName(), publisher.getName());
     }
-
-
 }
